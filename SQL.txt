@@ -1,0 +1,86 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `mykitchen` DEFAULT CHARACTER SET latin1 ;
+USE `mykitchen` ;
+-- -----------------------------------------------------
+-- Table `mykitchen`.`cust_login`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mykitchen`.`cust_login` ;
+
+CREATE TABLE IF NOT EXISTS `mykitchen`.`cust_login` (
+  `cust_id` INT(70) NOT NULL AUTO_INCREMENT,
+  `cust_email` VARCHAR(45) NOT NULL,
+  `cust_password` VARCHAR(45) NULL,
+  `cust_join_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`cust_id`),
+  UNIQUE INDEX `cust_email_UNIQUE` (`cust_email` ASC))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `mykitchen`.`caterer_login`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mykitchen`.`caterer_login` ;
+
+CREATE TABLE IF NOT EXISTS `mykitchen`.`caterer_login` (
+  `caterer_id` INT(70) NOT NULL AUTO_INCREMENT,
+  `caterer_email` VARCHAR(45) NOT NULL,
+  `caterer_password` VARCHAR(45) NULL,
+  `caterer_join_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`caterer_id`),
+  UNIQUE INDEX `caterer_email_UNIQUE` (`caterer_email` ASC))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `mykitchen`.`caterer_detail`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mykitchen`.`caterer_info` ;
+CREATE TABLE IF NOT EXISTS `mykitchen`.`caterer_info` (
+  `caterer_info_id` INT(70) NOT NULL AUTO_INCREMENT,
+  `caterer_id_fk` INT(70) NOT NULL,
+  `caterer_name` VARCHAR(45) NULL,
+  `caterer_address` VARCHAR(45) NULL,
+  `caterer_city` VARCHAR(45) NULL,
+  `caterer_state` VARCHAR(45) NULL,
+  `caterer_country` VARCHAR(45) NULL,
+  `caterer_zipcode` INT(45) NULL,
+  `caterer_phnnumber1` INT(45) NULL,
+  `caterer_phnnumber2` INT(45) NULL,
+  `caterer_phnnumber3` INT(45) NULL,
+  `caterer_email` VARCHAR(45) NULL,
+  PRIMARY KEY (`caterer_info_id`),
+  UNIQUE INDEX `caterer_id_fk_UNIQUE` (`caterer_id_fk` ASC),
+  CONSTRAINT `caterer_info_foreign_key`
+    FOREIGN KEY (`caterer_id_fk`)
+    REFERENCES `mykitchen`.`caterer_login` (`caterer_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `mykitchen`.`cust_info`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mykitchen`.`cust_info` ;
+
+CREATE TABLE IF NOT EXISTS `mykitchen`.`cust_info` (
+  `cust_info_id` INT(70) NOT NULL AUTO_INCREMENT,
+  `cust_id_fk` INT(70) NOT NULL,
+  `cust_name` VARCHAR(45) NULL,
+  `cust_address` VARCHAR(45) NULL,
+  `cust_city` VARCHAR(45) NULL,
+  `cust_state` VARCHAR(45) NULL,
+  `cust_country` VARCHAR(45) NULL,
+  `cust_zipcode` INT(45) NULL,
+  `cust_phnnumber1` INT(45) NULL,
+  `cust_phnnumber2` INT(45) NULL,
+  `cust_phnnumber3` INT(45) NULL,
+  `cust_email` VARCHAR(45) NULL,
+  PRIMARY KEY (`cust_info_id`),
+  UNIQUE INDEX `cust_id_fk_UNIQUE` (`cust_id_fk` ASC),
+  CONSTRAINT `cust_info_foreign_key`
+    FOREIGN KEY (`cust_id_fk`)
+    REFERENCES `mykitchen`.`cust_login` (`cust_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
